@@ -13,12 +13,12 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Validates GO releaser config
-      uses: docker://goreleaser/goreleaser:latest
+      uses: docker://goreleaser/goreleaser:latest-cgo
       with:
         args: check
 
     - name: Create release on GitHub
-      uses: docker://goreleaser/goreleaser:latest
+      uses: docker://goreleaser/goreleaser:latest-cgo
       with:
         args: release
       env:
