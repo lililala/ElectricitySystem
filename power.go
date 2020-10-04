@@ -87,10 +87,10 @@ func GetRemainingPower(room int) (*Power, error) {
 	date[2] = strings.Replace(date[2], " ", "", -1)
 	wwan, _ := strconv.Atoi(date[0])
 	date0 := uint16(wwan)
-	date1, _ := strconv.ParseFloat(date[1], 64)
-	date2, _ := strconv.ParseFloat(date[2], 64)
+	date1, _ := (strconv.ParseFloat(date[1], 32))
+	date2, _ := strconv.ParseFloat(date[2], 32)
 	loc, _ := time.LoadLocation("Asia/Shanghai")
-	the_time, err := time.ParseInLocation("2006/1/02 15:04:05", date[3], loc)
+	the_time, err := time.ParseInLocation("2006/1/2 15:04:05", date[3], loc)
 	if err != nil {
 		return nil, err
 	}
@@ -103,8 +103,8 @@ func GetRemainingPower(room int) (*Power, error) {
 	//生成struct
 	Date := &Power{
 		date0,
-		date1,
-		date2,
+		float32(date1),
+		float32(date2),
 		date3,
 	}
 	return Date, nil

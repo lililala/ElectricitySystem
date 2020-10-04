@@ -10,7 +10,7 @@ import "time"
 //	Date	抄表时间
 type Power struct {
 	Room      uint16
-	Used      float64
-	Remaining float64
+	Used      float32
+	Remaining float32
 	Date      time.Time
 }

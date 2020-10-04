@@ -15,7 +15,7 @@ func init() {
 	flag.IntVar(&room, "room", -1, "需要获取电费的宿舍的宿舍号")
 	flag.IntVar(&timee, "time", 3600, "获取间隔(秒)")
 	log.SetPrefix("[ElectricitySystem]")
-	log.SetFlags(log.LstdFlags | log.Lshortfile | log.LstdFlags)
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
 
 func main() {
@@ -26,17 +26,20 @@ func main() {
 	} else {
 		log.Println("初始化中...")
 		StartCheck()
-
-		for {
-			miao, err := GetRemainingPower(room)
-			if err != nil {
-				log.Println(err)
-			} else {
-				//向数据库中写入数据
-				UpdateData(miao, ElectricitySystem)
-				time.Sleep(time.Duration(timee) * time.Second)
-			}
-		}
+		go GetPower()
+		StartRPC()
 	}
+}
 
+func GetPower() {
+	for {
+		miao, err := GetRemainingPower(room)
+		if err != nil {
+			log.Println(err)
+		} else {
+			//向数据库中写入数据
+			UpdateData(miao, ElectricitySystem)
+		}
+		time.Sleep(time.Duration(timee) * time.Second)
+	}
 }

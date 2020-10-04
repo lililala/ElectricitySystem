@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package main;
+
+option go_package = ".;main";
+
+//定义消息"String"
+message Room {
+    string room = 1;
+}
+
+message Latest{
+    uint32 room =1;
+    float used = 2;
+    float remaining = 3;
+    google.protobuf.Timestamp date = 4;
+}
+
+//定义一个名为"WebService"的服务
+service WebService {
+    rpc GetLatest (Room) returns (Latest);
+}

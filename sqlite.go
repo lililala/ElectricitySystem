@@ -11,6 +11,38 @@ import (
 
 var ElectricitySystem string = "./ElectricitySystem.db"
 
+//GetLatest 获取指定房间的最新数据
+func GetLatest(miao string) *Power {
+	//打开数据库
+	db, err := sql.Open("sqlite3", ElectricitySystem+"?charset=utf")
+	dropErr(err)
+	defer db.Close()
+
+	//查询数据
+	rows, err := db.Query("select * FROM latest where room=" + miao)
+	dropErr(err)
+	defer rows.Close()
+
+	var (
+		id        int
+		room      uint16
+		used      float32
+		remaining float32
+		date      time.Time
+	)
+	for rows.Next() {
+		err = rows.Scan(&id, &room, &used, &remaining, &date)
+		dropErr(err)
+	}
+	data := &Power{
+		room,
+		used,
+		remaining,
+		date,
+	}
+	return data
+}
+
 //UpdateData [需要保存的数据] [数据库路径]
 func UpdateData(power *Power, database string) {
 	log.Println("开始获取电费...")
