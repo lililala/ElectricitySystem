@@ -12,9 +12,14 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v1
 
-    - name: Get dependencies
-      run: |
-        docker run --rm --privileged \
-        -v ($pwd):/go/src/github.com/lililala/ElectricitySystem \
-        -w /go/src/github.com/lililala/ElectricitySystem \
-        goreleaser/goreleaser:latest-cgo release --snapshot --rm-dist
+    - name: Validates GO releaser config
+      uses: docker://goreleaser/goreleaser:latest-cgo
+      with:
+        args: check
+
+    - name: Create release on GitHub
+      uses: docker://goreleaser/goreleaser:latest-cgo
+      with:
+        args: release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
