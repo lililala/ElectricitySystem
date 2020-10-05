@@ -7,15 +7,23 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-- env:
+- name: linux1
+  env:
   - CGO_ENABLED=1
   goos:
     - linux
   goarch:
     - amd64
-    - arm
-    - arm64
     - 386
+    
+- name: linux2
+  env:
+  - CGO_ENABLED=1
+  - CC=arm-linux-gnueabihf-gcc
+  goos:
+    - linux
+  goarch:
+    - arm
 
 archives:
 - replacements:
